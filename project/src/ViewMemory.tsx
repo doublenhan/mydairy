@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Calendar, ArrowLeft, X, ChevronLeft, ChevronRight, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
+import { useCloudinaryGallery } from './api/cloudinaryGalleryApi';
 import './styles/ViewMemory.css';
 
 interface Memory {
@@ -25,27 +26,18 @@ function ViewMemory({ onBack }: ViewMemoryProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load memories from API following ViewJournalFromCloudinary pattern
+  // Use the Cloudinary API hook
+  const { fetchGalleryImages } = useCloudinaryGallery();
+
+  // Load memories from API using the Cloudinary API hook
   useEffect(() => {
     const loadMemoriesFromAPI = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        const apiUrl = '/api/cloudinaryGalleryApi';
-        const res = await fetch(apiUrl);
-        
-        if (!res.ok) throw new Error('API not reachable');
-        
-        const contentType = res.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          const text = await res.text();
-          console.error('API response is not JSON:', text);
-          setMemories([]);
-          return;
-        }
-        
-        const data = await res.json();
+        // Use the Cloudinary API hook
+        const data = await fetchGalleryImages();
         
         console.log('ViewMemory - Raw API data:', data);
         console.log('ViewMemory - Data type:', typeof data);
@@ -55,19 +47,19 @@ function ViewMemory({ onBack }: ViewMemoryProps) {
           throw new Error('API response is not an array');
         }
         
-        // Filter and process entries with current API structure
+        // Filter and process entries with serverless API structure
         const entries = data
           .map((img: any, index: number) => {
             console.log(`ViewMemory - Processing item ${index}:`, img);
             
-            // Extract from current API structure (caption as title, description as content)
+            // Extract from serverless API response structure
             return {
-              url: img.url || img.secure_url || '',
-              title: img.caption || 'Love Memory',
+              url: img.secure_url || '',
+              title: img.title || img.caption || 'Love Memory',
               caption: img.caption || 'Love Memory',
               description: img.description || img.caption || 'A beautiful memory captured in time',
-              location: '', // Not available in current API structure
-              dateSelected: img.dateSelected ? new Date(img.dateSelected) : 
+              location: img.location || '',
+              dateSelected: img.dateselected ? new Date(img.dateselected) : 
                            new Date(img.created_at || Date.now())
             };
           })
@@ -119,7 +111,7 @@ function ViewMemory({ onBack }: ViewMemoryProps) {
     };
 
     loadMemoriesFromAPI();
-  }, []);
+  }, [fetchGalleryImages]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
