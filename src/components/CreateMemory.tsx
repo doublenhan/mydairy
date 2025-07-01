@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Heart, Camera, Calendar, Save, ArrowLeft, X, Upload, MapPin, Type } from 'lucide-react';
 import axios from 'axios';
-import './styles/CreateMemory.css';
 
 // Cloudinary config and upload helper
 const CLOUD_NAME = 'dhelefhv1';
@@ -108,66 +107,66 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
   const isFormValid = memoryText.trim().length > 0 && title.trim().length > 0;
 
   return (
-    <div className="create-memory-page">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50">
       {/* Header */}
-      <header className="create-memory-header">
-        <div className="create-memory-header-container">
-          <div className="create-memory-header-content">
+      <header className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
             <button 
               onClick={onBack}
-              className="back-button"
+              className="flex items-center space-x-2 text-gray-700 hover:text-pink-600 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span className="back-button-text">Back</span>
+              <span className="font-medium">Back</span>
             </button>
             
-            <div className="header-logo">
-              <div className="header-logo-icon">
+            <div className="flex items-center space-x-2">
+              <div className="bg-gradient-to-r from-pink-500 to-rose-500 p-2 rounded-xl">
                 <Heart className="w-5 h-5 text-white" />
               </div>
-              <span className="header-logo-text">
+              <span className="text-lg font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
                 Love Journal
               </span>
             </div>
             
-            <div className="w-16"></div> {/* Spacer for centering */}
+            <div className="w-16"></div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="create-memory-main">
-        <div className="memory-card">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden">
           {/* Page Header */}
-          <div className="memory-card-header">
-            <h1 className="memory-card-title">
+          <div className="bg-gradient-to-r from-pink-500 to-rose-500 px-8 py-12 text-center">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               Create New Memory
             </h1>
-            <p className="memory-card-subtitle">
+            <p className="text-pink-100 text-lg">
               Capture this beautiful moment forever
             </p>
           </div>
 
           {/* Form Content */}
-          <div className="form-content">
+          <div className="p-8 space-y-8">
             {/* Date Selection */}
-            <div className="form-section">
-              <label className="form-label">
-                <Calendar className="w-5 h-5 form-label-icon" />
+            <div className="space-y-3">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
+                <Calendar className="w-5 h-5 text-pink-500" />
                 <span>When did this happen?</span>
               </label>
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="form-input"
+                className="w-full px-4 py-3 border-2 border-pink-100 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
               />
             </div>
 
             {/* Title Field */}
-            <div className="form-section">
-              <label className="form-label">
-                <Type className="w-5 h-5 form-label-icon" />
+            <div className="space-y-3">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
+                <Type className="w-5 h-5 text-pink-500" />
                 <span>Memory Title</span>
               </label>
               <input
@@ -175,14 +174,14 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Give your memory a beautiful title..."
-                className="form-input"
+                className="w-full px-4 py-3 border-2 border-pink-100 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
               />
             </div>
 
             {/* Location Field */}
-            <div className="form-section">
-              <label className="form-label">
-                <MapPin className="w-5 h-5 form-label-icon" />
+            <div className="space-y-3">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
+                <MapPin className="w-5 h-5 text-pink-500" />
                 <span>Location (optional)</span>
               </label>
               <input
@@ -190,14 +189,14 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Where did this happen? (e.g., Paris, Our favorite café...)"
-                className="form-input"
+                className="w-full px-4 py-3 border-2 border-pink-100 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
               />
             </div>
 
             {/* Memory Text */}
-            <div className="form-section">
-              <label className="form-label">
-                <Heart className="w-5 h-5 form-label-icon" />
+            <div className="space-y-3">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
+                <Heart className="w-5 h-5 text-pink-500" />
                 <span>Tell your story</span>
               </label>
               <textarea
@@ -205,47 +204,45 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
                 onChange={(e) => setMemoryText(e.target.value)}
                 placeholder="Write about this special moment... What made it magical? How did it make you feel?"
                 rows={8}
-                className="form-textarea"
+                className="w-full px-4 py-3 border-2 border-pink-100 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100 resize-none"
               />
-              <div className="character-counter">
+              <div className="text-right text-sm text-gray-500">
                 {memoryText.length} characters
               </div>
             </div>
 
             {/* Image Upload */}
-            <div className="upload-section">
-              <label className="form-label">
-                <Camera className="w-5 h-5 form-label-icon" />
+            <div className="space-y-4">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900">
+                <Camera className="w-5 h-5 text-pink-500" />
                 <span>Add photos</span>
               </label>
               
               {/* Image URL Input */}
-              <div className="form-section">
-                <input
-                  type="text"
-                  placeholder="Enter image URL (optional)..."
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  className="form-input"
-                  disabled={!!uploadedFile}
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Enter image URL (optional)..."
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className="w-full px-4 py-3 border-2 border-pink-100 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
+                disabled={!!uploadedFile}
+              />
 
               {/* Upload Area */}
-              <div className="upload-area">
+              <div className="relative">
                 <input
                   id="file-upload"
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
-                  className="upload-input"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                 />
-                <label htmlFor="file-upload" className="upload-dropzone">
-                  <Upload className="upload-icon" />
-                  <p className="upload-text">
+                <label htmlFor="file-upload" className="border-2 border-dashed border-pink-200 rounded-xl p-8 text-center transition-all duration-200 hover:border-pink-300 hover:bg-pink-50 cursor-pointer block">
+                  <Upload className="w-12 h-12 text-pink-400 mx-auto mb-4" />
+                  <p className="text-gray-600 font-medium mb-2">
                     Click to upload photos or drag and drop
                   </p>
-                  <p className="upload-subtext">
+                  <p className="text-sm text-gray-500">
                     PNG, JPG, GIF up to 10MB each
                   </p>
                 </label>
@@ -253,16 +250,16 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
 
               {/* Image Preview */}
               {imagePreview && (
-                <div className="image-previews">
-                  <div className="image-preview">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  <div className="relative">
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="image-preview-img"
+                      className="w-full h-24 sm:h-32 object-cover rounded-lg shadow-md"
                     />
                     <button
                       onClick={removeImage}
-                      className="image-remove-button"
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 hover:opacity-100 transition-opacity"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -272,12 +269,14 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
             </div>
 
             {/* Save Button */}
-            <div className="save-section">
+            <div className="pt-6 border-t border-pink-100">
               <button
                 onClick={handleSave}
                 disabled={!isFormValid}
-                className={`save-button ${
-                  isFormValid ? 'save-button-enabled' : 'save-button-disabled'
+                className={`w-full py-4 px-8 rounded-xl font-semibold text-lg transition-all duration-200 flex items-center justify-center space-x-2 ${
+                  isFormValid 
+                    ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white hover:from-pink-600 hover:to-rose-600 hover:scale-102 shadow-lg hover:shadow-xl' 
+                    : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                 }`}
               >
                 <Save className="w-5 h-5" />
@@ -285,7 +284,7 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
               </button>
               
               {!isFormValid && (
-                <p className="save-validation-message">
+                <p className="text-center text-sm text-gray-500 mt-3">
                   Please add a title and write your memory to save it
                 </p>
               )}
@@ -294,31 +293,31 @@ function CreateMemory({ onBack }: CreateMemoryProps) {
         </div>
 
         {/* Tips Section */}
-        <div className="tips-section">
-          <h3 className="tips-title">
-            <Heart className="w-5 h-5 tips-title-icon" />
-            Tips for capturing memories
+        <div className="mt-8 bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-pink-100">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+            <Heart className="w-5 h-5 text-pink-500" />
+            <span>Tips for capturing memories</span>
           </h3>
-          <ul className="tips-list">
-            <li className="tips-item">
-              <span className="tips-bullet">•</span>
-              <span className="tips-text">Choose a meaningful title that captures the essence of your memory</span>
+          <ul className="space-y-2 text-gray-600">
+            <li className="flex items-start space-x-2">
+              <span className="text-pink-400 mt-1">•</span>
+              <span>Choose a meaningful title that captures the essence of your memory</span>
             </li>
-            <li className="tips-item">
-              <span className="tips-bullet">•</span>
-              <span className="tips-text">Include details about what made this moment special</span>
+            <li className="flex items-start space-x-2">
+              <span className="text-pink-400 mt-1">•</span>
+              <span>Include details about what made this moment special</span>
             </li>
-            <li className="tips-item">
-              <span className="tips-bullet">•</span>
-              <span className="tips-text">Describe your feelings and emotions in that moment</span>
+            <li className="flex items-start space-x-2">
+              <span className="text-pink-400 mt-1">•</span>
+              <span>Describe your feelings and emotions in that moment</span>
             </li>
-            <li className="tips-item">
-              <span className="tips-bullet">•</span>
-              <span className="tips-text">Add location and photos to bring your memory to life</span>
+            <li className="flex items-start space-x-2">
+              <span className="text-pink-400 mt-1">•</span>
+              <span>Add location and photos to bring your memory to life</span>
             </li>
-            <li className="tips-item">
-              <span className="tips-bullet">•</span>
-              <span className="tips-text">Don't worry about perfect writing - authenticity matters most</span>
+            <li className="flex items-start space-x-2">
+              <span className="text-pink-400 mt-1">•</span>
+              <span>Don't worry about perfect writing - authenticity matters most</span>
             </li>
           </ul>
         </div>

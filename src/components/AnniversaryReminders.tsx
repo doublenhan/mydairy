@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Calendar, Bell, Plus, X, Edit3, Trash2, ArrowLeft, Gift, Sparkles, Clock, BellRing } from 'lucide-react';
-import './styles/AnniversaryReminders.css';
 
 interface Anniversary {
   id: string;
@@ -265,83 +264,87 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
   const otherAnniversaries = anniversaries.filter(ann => !ann.isUpcoming);
 
   return (
-    <div className="anniversary-reminders-page">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50">
       {/* Header */}
-      <header className="anniversary-header">
-        <div className="anniversary-header-container">
-          <div className="anniversary-header-content">
+      <header className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
             <button 
               onClick={onBack}
-              className="back-button"
+              className="flex items-center space-x-2 text-gray-700 hover:text-pink-600 transition-all duration-200 hover:-translate-x-1"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span className="back-button-text">Back</span>
+              <span className="font-medium">Back</span>
             </button>
             
-            <div className="header-logo">
-              <div className="header-logo-icon">
+            <div className="flex items-center space-x-2">
+              <div className="bg-gradient-to-r from-pink-500 to-rose-500 p-2 rounded-xl animate-pulse">
                 <Heart className="w-5 h-5 text-white" />
               </div>
-              <span className="header-logo-text">Love Journal</span>
+              <span className="text-lg font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Love Journal</span>
             </div>
             
             <button
               onClick={() => setShowAddForm(true)}
-              className="add-button"
+              className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-4 py-2 rounded-full font-medium transition-all duration-200 hover:from-pink-600 hover:to-rose-600 hover:scale-105 shadow-lg flex items-center space-x-2"
             >
               <Plus className="w-5 h-5" />
-              <span className="add-button-text">Add</span>
+              <span className="hidden sm:block">Add</span>
             </button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="anniversary-main">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="page-header">
-          <h1 className="page-title">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             Anniversary
-            <span className="gradient-text"> Reminders</span>
+            <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"> Reminders</span>
           </h1>
-          <p className="page-subtitle">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Never miss a special moment - keep track of all your important relationship milestones
           </p>
         </div>
 
         {/* Upcoming Anniversaries */}
         {upcomingAnniversaries.length > 0 && (
-          <section className="upcoming-section">
-            <div className="section-header">
-              <div className="section-title-container">
+          <section className="mb-16">
+            <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+              <div className="flex items-center space-x-3">
                 <BellRing className="w-6 h-6 text-pink-500 animate-pulse" />
-                <h2 className="section-title">Coming Soon</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Coming Soon</h2>
               </div>
-              <div className="upcoming-count">
+              <div className="bg-gradient-to-r from-pink-100 to-rose-100 text-pink-600 px-4 py-2 rounded-full text-sm font-semibold border border-pink-200">
                 {upcomingAnniversaries.length} upcoming
               </div>
             </div>
             
-            <div className="anniversaries-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {upcomingAnniversaries.map((anniversary, index) => (
                 <div 
                   key={anniversary.id}
-                  className="anniversary-card upcoming-card"
+                  className="bg-white rounded-3xl shadow-xl border-2 border-pink-200 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer relative overflow-hidden animate-pulse-glow"
                   style={{ animationDelay: `${index * 0.1}s` }}
                   onClick={createFloatingHearts}
                 >
                   {/* Card Header */}
-                  <div className="card-header">
-                    <div className={`anniversary-icon bg-gradient-to-r ${getAnniversaryColor(anniversary.type)}`}>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getAnniversaryColor(anniversary.type)} flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110`}>
                       {getAnniversaryIcon(anniversary.type)}
                     </div>
-                    <div className="card-actions">
+                    <div className="flex items-center space-x-2">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleNotification(anniversary.id);
                         }}
-                        className={`notification-toggle ${anniversary.isNotificationEnabled ? 'active' : ''}`}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                          anniversary.isNotificationEnabled 
+                            ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white animate-pulse' 
+                            : 'bg-gray-200 text-gray-500'
+                        }`}
                       >
                         <Bell className="w-4 h-4" />
                       </button>
@@ -350,7 +353,7 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                           e.stopPropagation();
                           handleEditAnniversary(anniversary);
                         }}
-                        className="edit-button"
+                        className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center transition-all duration-200 hover:bg-blue-200 hover:scale-110"
                       >
                         <Edit3 className="w-4 h-4" />
                       </button>
@@ -359,7 +362,7 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                           e.stopPropagation();
                           handleDeleteAnniversary(anniversary.id);
                         }}
-                        className="delete-button"
+                        className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center transition-all duration-200 hover:bg-red-200 hover:scale-110"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -367,34 +370,34 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                   </div>
 
                   {/* Card Content */}
-                  <div className="card-content">
-                    <h3 className="anniversary-title">{anniversary.title}</h3>
-                    <div className="anniversary-date">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-gray-900">{anniversary.title}</h3>
+                    <div className="flex items-center space-x-2 text-gray-600">
                       <Calendar className="w-4 h-4" />
                       <span>{formatDate(anniversary.date)}</span>
                     </div>
                     
-                    <div className="anniversary-details">
-                      <div className="years-badge">
+                    <div className="flex items-center justify-between">
+                      <div className="bg-gradient-to-r from-pink-100 to-rose-100 text-pink-600 px-3 py-1 rounded-full text-sm font-semibold border border-pink-200">
                         {(anniversary.yearsSince ?? 0) > 0 ? `${(anniversary.yearsSince ?? 0) + 1} Years` : 'First Year'}
                       </div>
-                      <div className="days-until">
+                      <div className="flex items-center space-x-2 text-gray-600">
                         <Clock className="w-4 h-4" />
-                        <span className="days-count">{anniversary.daysUntil}</span>
-                        <span className="days-text">days to go</span>
+                        <span className="text-2xl font-bold text-pink-600">{anniversary.daysUntil}</span>
+                        <span className="text-sm">days to go</span>
                       </div>
                     </div>
 
                     {anniversary.isNotificationEnabled && (
-                      <div className="reminder-info">
+                      <div className="flex items-center space-x-2 text-gray-600 p-3 bg-gray-50 rounded-xl border border-gray-200">
                         <Bell className="w-4 h-4" />
-                        <span>Reminder set for {anniversary.reminderDays} day{anniversary.reminderDays !== 1 ? 's' : ''} before</span>
+                        <span className="text-sm">Reminder set for {anniversary.reminderDays} day{anniversary.reminderDays !== 1 ? 's' : ''} before</span>
                       </div>
                     )}
                   </div>
 
                   {/* Upcoming Glow Effect */}
-                  <div className="upcoming-glow"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-3xl pointer-events-none"></div>
                 </div>
               ))}
             </div>
@@ -402,37 +405,41 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
         )}
 
         {/* All Anniversaries */}
-        <section className="all-anniversaries-section">
-          <div className="section-header">
-            <div className="section-title-container">
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+            <div className="flex items-center space-x-3">
               <Heart className="w-6 h-6 text-pink-500" />
-              <h2 className="section-title">All Anniversaries</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">All Anniversaries</h2>
             </div>
-            <div className="total-count">
+            <div className="bg-gray-100 text-gray-600 px-4 py-2 rounded-full text-sm font-semibold">
               {anniversaries.length} total
             </div>
           </div>
           
-          <div className="anniversaries-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {otherAnniversaries.map((anniversary, index) => (
               <div 
                 key={anniversary.id}
-                className="anniversary-card"
+                className="bg-white rounded-3xl shadow-xl border border-pink-100 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer relative overflow-hidden"
                 style={{ animationDelay: `${(upcomingAnniversaries.length + index) * 0.1}s` }}
                 onClick={createFloatingHearts}
               >
                 {/* Card Header */}
-                <div className="card-header">
-                  <div className={`anniversary-icon bg-gradient-to-r ${getAnniversaryColor(anniversary.type)}`}>
+                <div className="flex items-center justify-between mb-6">
+                  <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getAnniversaryColor(anniversary.type)} flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110`}>
                     {getAnniversaryIcon(anniversary.type)}
                   </div>
-                  <div className="card-actions">
+                  <div className="flex items-center space-x-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleNotification(anniversary.id);
                       }}
-                      className={`notification-toggle ${anniversary.isNotificationEnabled ? 'active' : ''}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                        anniversary.isNotificationEnabled 
+                          ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white' 
+                          : 'bg-gray-200 text-gray-500'
+                      }`}
                     >
                       <Bell className="w-4 h-4" />
                     </button>
@@ -441,7 +448,7 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                         e.stopPropagation();
                         handleEditAnniversary(anniversary);
                       }}
-                      className="edit-button"
+                      className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center transition-all duration-200 hover:bg-blue-200 hover:scale-110"
                     >
                       <Edit3 className="w-4 h-4" />
                     </button>
@@ -450,7 +457,7 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                         e.stopPropagation();
                         handleDeleteAnniversary(anniversary.id);
                       }}
-                      className="delete-button"
+                      className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center transition-all duration-200 hover:bg-red-200 hover:scale-110"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -458,31 +465,34 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                 </div>
 
                 {/* Card Content */}
-                <div className="card-content">
-                  <h3 className="anniversary-title">{anniversary.title}</h3>
-                  <div className="anniversary-date">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-gray-900">{anniversary.title}</h3>
+                  <div className="flex items-center space-x-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
                     <span>{formatDate(anniversary.date)}</span>
                   </div>
                   
-                  <div className="anniversary-details">
-                    <div className="years-badge">
+                  <div className="flex items-center justify-between">
+                    <div className="bg-gradient-to-r from-pink-100 to-rose-100 text-pink-600 px-3 py-1 rounded-full text-sm font-semibold border border-pink-200">
                       {(anniversary.yearsSince ?? 0) > 0 ? `${(anniversary.yearsSince ?? 0) + 1} Years` : 'First Year'}
                     </div>
-                    <div className="days-until">
+                    <div className="flex items-center space-x-2 text-gray-600">
                       <Clock className="w-4 h-4" />
-                      <span className="days-count">{anniversary.daysUntil}</span>
-                      <span className="days-text">days to go</span>
+                      <span className="text-2xl font-bold text-pink-600">{anniversary.daysUntil}</span>
+                      <span className="text-sm">days to go</span>
                     </div>
                   </div>
 
                   {anniversary.isNotificationEnabled && (
-                    <div className="reminder-info">
+                    <div className="flex items-center space-x-2 text-gray-600 p-3 bg-gray-50 rounded-xl border border-gray-200">
                       <Bell className="w-4 h-4" />
-                      <span>Reminder set for {anniversary.reminderDays} day{anniversary.reminderDays !== 1 ? 's' : ''} before</span>
+                      <span className="text-sm">Reminder set for {anniversary.reminderDays} day{anniversary.reminderDays !== 1 ? 's' : ''} before</span>
                     </div>
                   )}
                 </div>
+
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-1000 pointer-events-none"></div>
               </div>
             ))}
           </div>
@@ -490,16 +500,16 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
 
         {/* Empty State */}
         {anniversaries.length === 0 && (
-          <div className="empty-state">
-            <Heart className="empty-state-icon" />
-            <h3 className="empty-state-title">No anniversaries yet</h3>
-            <p className="empty-state-text">Add your first anniversary to start tracking your special moments!</p>
+          <div className="text-center py-20">
+            <Heart className="w-16 h-16 text-pink-300 mx-auto mb-4 animate-pulse" />
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">No anniversaries yet</h3>
+            <p className="text-gray-500 mb-8">Add your first anniversary to start tracking your special moments!</p>
             <button
               onClick={() => setShowAddForm(true)}
-              className="empty-state-button"
+              className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-4 rounded-full font-semibold transition-all duration-200 hover:from-pink-600 hover:to-rose-600 hover:scale-105 shadow-lg flex items-center space-x-2 mx-auto"
             >
               <Plus className="w-5 h-5" />
-              Add Anniversary
+              <span>Add Anniversary</span>
             </button>
           </div>
         )}
@@ -507,10 +517,10 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
 
       {/* Add/Edit Anniversary Modal */}
       {showAddForm && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h2 className="modal-title">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between p-8 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">
                 {editingAnniversary ? 'Edit Anniversary' : 'Add New Anniversary'}
               </h2>
               <button
@@ -525,40 +535,40 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                     isNotificationEnabled: true
                   });
                 }}
-                className="modal-close"
+                className="text-gray-500 hover:text-gray-700 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            <div className="modal-content">
-              <div className="form-group">
-                <label className="form-label">Anniversary Title</label>
+            <div className="p-8 space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Anniversary Title</label>
                 <input
                   type="text"
                   value={newAnniversary.title}
                   onChange={(e) => setNewAnniversary(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="e.g., First Date Anniversary"
-                  className="form-input"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Date</label>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Date</label>
                 <input
                   type="date"
                   value={newAnniversary.date}
                   onChange={(e) => setNewAnniversary(prev => ({ ...prev, date: e.target.value }))}
-                  className="form-input"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                 />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Anniversary Type</label>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Anniversary Type</label>
                 <select
                   value={newAnniversary.type}
                   onChange={(e) => setNewAnniversary(prev => ({ ...prev, type: e.target.value as any }))}
-                  className="form-select"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                 >
                   <option value="custom">Custom</option>
                   <option value="first_date">First Date</option>
@@ -567,12 +577,12 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                 </select>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Remind me</label>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Remind me</label>
                 <select
                   value={newAnniversary.reminderDays}
                   onChange={(e) => setNewAnniversary(prev => ({ ...prev, reminderDays: parseInt(e.target.value) }))}
-                  className="form-select"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                 >
                   <option value={1}>1 day before</option>
                   <option value={3}>3 days before</option>
@@ -582,20 +592,20 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                 </select>
               </div>
 
-              <div className="form-group">
-                <label className="checkbox-label">
+              <div>
+                <label className="flex items-center space-x-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={newAnniversary.isNotificationEnabled}
                     onChange={(e) => setNewAnniversary(prev => ({ ...prev, isNotificationEnabled: e.target.checked }))}
-                    className="checkbox-input"
+                    className="w-5 h-5 text-pink-600 rounded focus:ring-pink-500"
                   />
-                  <span className="checkbox-text">Enable notifications</span>
+                  <span className="text-sm font-medium text-gray-900">Enable notifications</span>
                 </label>
               </div>
             </div>
 
-            <div className="modal-actions">
+            <div className="flex space-x-4 p-8 border-t border-gray-200">
               <button
                 onClick={() => {
                   setShowAddForm(false);
@@ -608,14 +618,14 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
                     isNotificationEnabled: true
                   });
                 }}
-                className="cancel-button"
+                className="flex-1 py-3 px-6 border-2 border-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-200 hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
                 onClick={editingAnniversary ? handleUpdateAnniversary : handleAddAnniversary}
                 disabled={!newAnniversary.title || !newAnniversary.date}
-                className="save-button"
+                className="flex-1 py-3 px-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl font-semibold transition-all duration-200 hover:from-pink-600 hover:to-rose-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed"
               >
                 {editingAnniversary ? 'Update' : 'Add'} Anniversary
               </button>
@@ -628,7 +638,7 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
       {floatingHearts.map(heart => (
         <div
           key={heart.id}
-          className="floating-heart"
+          className="fixed pointer-events-none z-50 animate-float-heart"
           style={{
             left: heart.x,
             top: heart.y,
@@ -637,6 +647,36 @@ function AnniversaryReminders({ onBack }: AnniversaryRemindersProps) {
           <Heart className="w-6 h-6 fill-current text-pink-500" />
         </div>
       ))}
+
+      <style jsx>{`
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.6);
+          }
+        }
+
+        @keyframes float-heart {
+          0% {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotate(0deg);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-100px) scale(1.5) rotate(360deg);
+          }
+        }
+
+        .animate-pulse-glow {
+          animation: pulse-glow 3s infinite;
+        }
+
+        .animate-float-heart {
+          animation: float-heart 2s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 }

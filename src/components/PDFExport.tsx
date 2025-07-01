@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Heart, Calendar, ArrowLeft, Download, FileText, Image, Palette, Settings, Check, Loader2, Star, Sparkles, BookOpen } from 'lucide-react';
 import jsPDF from 'jspdf';
-import './styles/PDFExport.css';
 
 interface Memory {
   id: string;
@@ -53,7 +52,6 @@ function PDFExport({ onBack }: PDFExportProps) {
   });
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
-  const [showPreview, setShowPreview] = useState(false);
 
   // Mock data - in a real app, this would come from your backend
   React.useEffect(() => {
@@ -372,24 +370,24 @@ function PDFExport({ onBack }: PDFExportProps) {
   };
 
   return (
-    <div className="pdf-export-page">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50">
       {/* Header */}
-      <header className="pdf-export-header">
-        <div className="pdf-export-header-container">
-          <div className="pdf-export-header-content">
+      <header className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
             <button 
               onClick={onBack}
-              className="back-button"
+              className="flex items-center space-x-2 text-gray-700 hover:text-pink-600 transition-all duration-200 hover:-translate-x-1"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span className="back-button-text">Back</span>
+              <span className="font-medium">Back</span>
             </button>
             
-            <div className="header-logo">
-              <div className="header-logo-icon">
+            <div className="flex items-center space-x-2">
+              <div className="bg-gradient-to-r from-pink-500 to-rose-500 p-2 rounded-xl animate-pulse">
                 <Heart className="w-5 h-5 text-white" />
               </div>
-              <span className="header-logo-text">Love Journal</span>
+              <span className="text-lg font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Love Journal</span>
             </div>
             
             <div className="w-16"></div>
@@ -398,34 +396,34 @@ function PDFExport({ onBack }: PDFExportProps) {
       </header>
 
       {/* Main Content */}
-      <main className="pdf-export-main">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="page-header">
-          <h1 className="page-title">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 leading-tight">
             Export to
-            <span className="gradient-text"> PDF</span>
+            <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent"> PDF</span>
           </h1>
-          <p className="page-subtitle">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Create a beautiful PDF book of your love memories to print and treasure forever
           </p>
         </div>
 
-        <div className="export-container">
+        <div className="grid lg:grid-cols-2 gap-12 mb-12">
           {/* Settings Panel */}
-          <div className="settings-panel">
-            <div className="settings-card">
-              <div className="settings-header">
+          <div className="space-y-8">
+            <div className="bg-white rounded-3xl shadow-xl border border-pink-100 p-8">
+              <div className="flex items-center space-x-3 mb-8">
                 <Settings className="w-6 h-6 text-pink-500" />
-                <h2 className="settings-title">Export Settings</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Export Settings</h2>
               </div>
 
               {/* Date Range */}
-              <div className="setting-group">
-                <label className="setting-label">
+              <div className="mb-8">
+                <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900 mb-3">
                   <Calendar className="w-5 h-5" />
-                  Date Range
+                  <span>Date Range</span>
                 </label>
-                <div className="date-range-inputs">
+                <div className="flex items-center space-x-4 flex-wrap gap-4">
                   <input
                     type="date"
                     value={exportSettings.dateRange.start}
@@ -433,9 +431,9 @@ function PDFExport({ onBack }: PDFExportProps) {
                       ...prev,
                       dateRange: { ...prev.dateRange, start: e.target.value }
                     }))}
-                    className="date-input"
+                    className="flex-1 min-w-[140px] px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                   />
-                  <span className="date-separator">to</span>
+                  <span className="text-gray-500 font-medium">to</span>
                   <input
                     type="date"
                     value={exportSettings.dateRange.end}
@@ -443,18 +441,18 @@ function PDFExport({ onBack }: PDFExportProps) {
                       ...prev,
                       dateRange: { ...prev.dateRange, end: e.target.value }
                     }))}
-                    className="date-input"
+                    className="flex-1 min-w-[140px] px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                   />
                 </div>
               </div>
 
               {/* Template Selection */}
-              <div className="setting-group">
-                <label className="setting-label">
+              <div className="mb-8">
+                <label className="flex items-center space-x-2 text-lg font-semibold text-gray-900 mb-3">
                   <Palette className="w-5 h-5" />
-                  Template Style
+                  <span>Template Style</span>
                 </label>
-                <div className="template-grid">
+                <div className="space-y-3">
                   {[
                     { id: 'romantic', name: 'Romantic', description: 'Pink hearts & elegant fonts' },
                     { id: 'elegant', name: 'Elegant', description: 'Clean & sophisticated' },
@@ -463,17 +461,21 @@ function PDFExport({ onBack }: PDFExportProps) {
                     <button
                       key={template.id}
                       onClick={() => setExportSettings(prev => ({ ...prev, template: template.id as any }))}
-                      className={`template-option ${exportSettings.template === template.id ? 'selected' : ''}`}
+                      className={`w-full flex items-center space-x-4 p-4 border-2 rounded-xl transition-all duration-200 text-left relative ${
+                        exportSettings.template === template.id 
+                          ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-rose-50 shadow-md' 
+                          : 'border-gray-200 hover:border-pink-300 hover:bg-pink-50'
+                      }`}
                     >
-                      <div className="template-icon">
+                      <div className="text-pink-500 flex-shrink-0">
                         {getTemplateIcon(template.id)}
                       </div>
-                      <div className="template-info">
-                        <h3 className="template-name">{template.name}</h3>
-                        <p className="template-description">{template.description}</p>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900">{template.name}</h3>
+                        <p className="text-sm text-gray-600">{template.description}</p>
                       </div>
                       {exportSettings.template === template.id && (
-                        <Check className="w-5 h-5 text-pink-500 template-check" />
+                        <Check className="w-5 h-5 text-pink-500 absolute top-2 right-2" />
                       )}
                     </button>
                   ))}
@@ -481,35 +483,35 @@ function PDFExport({ onBack }: PDFExportProps) {
               </div>
 
               {/* Content Options */}
-              <div className="setting-group">
-                <label className="setting-label">Content Options</label>
-                <div className="checkbox-group">
-                  <label className="checkbox-option">
+              <div className="mb-8">
+                <label className="block text-lg font-semibold text-gray-900 mb-3">Content Options</label>
+                <div className="space-y-3">
+                  <label className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-pink-50 transition-colors">
                     <input
                       type="checkbox"
                       checked={exportSettings.includeImages}
                       onChange={(e) => setExportSettings(prev => ({ ...prev, includeImages: e.target.checked }))}
-                      className="checkbox-input"
+                      className="w-5 h-5 text-pink-600 rounded focus:ring-pink-500"
                     />
-                    <Image className="w-5 h-5" />
-                    <span>Include Photos</span>
+                    <Image className="w-5 h-5 text-gray-600" />
+                    <span className="font-medium text-gray-900">Include Photos</span>
                   </label>
-                  <label className="checkbox-option">
+                  <label className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-pink-50 transition-colors">
                     <input
                       type="checkbox"
                       checked={exportSettings.includeMoods}
                       onChange={(e) => setExportSettings(prev => ({ ...prev, includeMoods: e.target.checked }))}
-                      className="checkbox-input"
+                      className="w-5 h-5 text-pink-600 rounded focus:ring-pink-500"
                     />
-                    <Sparkles className="w-5 h-5" />
-                    <span>Include Mood Indicators</span>
+                    <Sparkles className="w-5 h-5 text-gray-600" />
+                    <span className="font-medium text-gray-900">Include Mood Indicators</span>
                   </label>
                 </div>
               </div>
 
               {/* Cover Page Settings */}
-              <div className="setting-group">
-                <label className="checkbox-option">
+              <div>
+                <label className="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-pink-50 transition-colors mb-4">
                   <input
                     type="checkbox"
                     checked={exportSettings.coverPage.enabled}
@@ -517,14 +519,14 @@ function PDFExport({ onBack }: PDFExportProps) {
                       ...prev,
                       coverPage: { ...prev.coverPage, enabled: e.target.checked }
                     }))}
-                    className="checkbox-input"
+                    className="w-5 h-5 text-pink-600 rounded focus:ring-pink-500"
                   />
-                  <FileText className="w-5 h-5" />
-                  <span>Include Cover Page</span>
+                  <FileText className="w-5 h-5 text-gray-600" />
+                  <span className="font-medium text-gray-900">Include Cover Page</span>
                 </label>
 
                 {exportSettings.coverPage.enabled && (
-                  <div className="cover-page-settings">
+                  <div className="space-y-4 ml-8">
                     <input
                       type="text"
                       placeholder="Book Title"
@@ -533,7 +535,7 @@ function PDFExport({ onBack }: PDFExportProps) {
                         ...prev,
                         coverPage: { ...prev.coverPage, title: e.target.value }
                       }))}
-                      className="cover-input"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                     />
                     <input
                       type="text"
@@ -543,7 +545,7 @@ function PDFExport({ onBack }: PDFExportProps) {
                         ...prev,
                         coverPage: { ...prev.coverPage, names: e.target.value }
                       }))}
-                      className="cover-input"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-200 focus:border-pink-300 focus:outline-none focus:ring-4 focus:ring-pink-100"
                     />
                   </div>
                 )}
@@ -552,67 +554,73 @@ function PDFExport({ onBack }: PDFExportProps) {
           </div>
 
           {/* Memory Selection */}
-          <div className="memory-selection-panel">
-            <div className="memory-selection-card">
-              <div className="memory-selection-header">
-                <div className="memory-selection-title">
+          <div className="bg-white rounded-3xl shadow-xl border border-pink-100 overflow-hidden">
+            <div className="p-8 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
+                <div className="flex items-center space-x-3">
                   <Heart className="w-6 h-6 text-pink-500" />
-                  <h2>Select Memories</h2>
-                  <span className="memory-count">
+                  <h2 className="text-2xl font-bold text-gray-900">Select Memories</h2>
+                  <span className="bg-gradient-to-r from-pink-100 to-rose-100 text-pink-600 px-3 py-1 rounded-full text-sm font-semibold border border-pink-200">
                     {exportSettings.selectedMemories.length} of {memories.length} selected
                   </span>
                 </div>
-                <div className="selection-actions">
-                  <button onClick={selectAllMemories} className="select-action">
+                <div className="flex space-x-4">
+                  <button onClick={selectAllMemories} className="text-pink-600 hover:text-pink-700 font-medium transition-colors">
                     Select All
                   </button>
-                  <button onClick={deselectAllMemories} className="select-action">
+                  <button onClick={deselectAllMemories} className="text-gray-600 hover:text-gray-700 font-medium transition-colors">
                     Clear All
                   </button>
                 </div>
               </div>
+            </div>
 
-              <div className="memory-list">
-                {memories.map((memory) => (
-                  <div
-                    key={memory.id}
-                    className={`memory-item ${exportSettings.selectedMemories.includes(memory.id) ? 'selected' : ''}`}
-                    onClick={() => toggleMemorySelection(memory.id)}
-                  >
-                    <div className="memory-checkbox">
-                      {exportSettings.selectedMemories.includes(memory.id) ? (
-                        <Check className="w-5 h-5 text-white" />
-                      ) : (
-                        <div className="checkbox-empty"></div>
-                      )}
-                    </div>
-                    
-                    <div className="memory-content">
-                      <div className="memory-header">
-                        <span className="memory-date">{formatDate(memory.date)}</span>
-                        {exportSettings.includeMoods && (
-                          <span className="memory-mood">{memory.moodEmoji}</span>
-                        )}
+            <div className="max-h-96 overflow-y-auto p-4">
+              {memories.map((memory) => (
+                <div
+                  key={memory.id}
+                  className={`flex items-start space-x-4 p-4 rounded-xl transition-all duration-200 cursor-pointer border-2 mb-3 ${
+                    exportSettings.selectedMemories.includes(memory.id) 
+                      ? 'bg-gradient-to-br from-pink-50 to-rose-50 border-pink-200' 
+                      : 'border-transparent hover:bg-gray-50'
+                  }`}
+                  onClick={() => toggleMemorySelection(memory.id)}
+                >
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    {exportSettings.selectedMemories.includes(memory.id) ? (
+                      <div className="w-6 h-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center">
+                        <Check className="w-4 h-4 text-white" />
                       </div>
-                      <p className="memory-text">
-                        {memory.content.substring(0, 120)}
-                        {memory.content.length > 120 ? '...' : ''}
-                      </p>
-                      {memory.photos.length > 0 && (
-                        <div className="memory-photos-indicator">
-                          <Image className="w-4 h-4" />
-                          <span>{memory.photos.length} photo{memory.photos.length !== 1 ? 's' : ''}</span>
-                        </div>
+                    ) : (
+                      <div className="w-6 h-6 border-2 border-gray-300 rounded-lg"></div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-semibold text-gray-900 text-sm">{formatDate(memory.date)}</span>
+                      {exportSettings.includeMoods && (
+                        <span className="text-xl">{memory.moodEmoji}</span>
                       )}
                     </div>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      {memory.content.substring(0, 120)}
+                      {memory.content.length > 120 ? '...' : ''}
+                    </p>
+                    {memory.photos.length > 0 && (
+                      <div className="flex items-center space-x-1 mt-2 text-gray-500">
+                        <Image className="w-4 h-4" />
+                        <span className="text-xs">{memory.photos.length} photo{memory.photos.length !== 1 ? 's' : ''}</span>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
 
               {memories.length === 0 && (
-                <div className="empty-memories">
-                  <Heart className="w-12 h-12 text-pink-200" />
-                  <p>No memories found in the selected date range</p>
+                <div className="text-center py-12">
+                  <Heart className="w-12 h-12 text-pink-200 mx-auto mb-4" />
+                  <p className="text-gray-500">No memories found in the selected date range</p>
                 </div>
               )}
             </div>
@@ -620,22 +628,22 @@ function PDFExport({ onBack }: PDFExportProps) {
         </div>
 
         {/* Export Actions */}
-        <div className="export-actions">
-          <div className="export-actions-card">
-            <div className="export-info">
-              <h3 className="export-info-title">Ready to Export</h3>
-              <p className="export-info-text">
+        <div className="bg-white rounded-3xl shadow-xl border border-pink-100 p-8">
+          <div className="flex items-center justify-between flex-wrap gap-6">
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Export</h3>
+              <p className="text-gray-600">
                 {exportSettings.selectedMemories.length} memories selected • 
                 {exportSettings.template} template • 
                 {exportSettings.includeImages ? 'With' : 'Without'} photos
               </p>
             </div>
 
-            <div className="export-buttons">
+            <div className="flex space-x-4">
               <button
                 onClick={generatePDF}
                 disabled={exportSettings.selectedMemories.length === 0 || isExporting}
-                className="export-button primary"
+                className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 hover:from-pink-600 hover:to-rose-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed flex items-center space-x-2 min-w-[160px] justify-center"
               >
                 {isExporting ? (
                   <>
@@ -649,29 +657,20 @@ function PDFExport({ onBack }: PDFExportProps) {
                   </>
                 )}
               </button>
-
-              <button
-                onClick={() => setShowPreview(!showPreview)}
-                disabled={exportSettings.selectedMemories.length === 0}
-                className="export-button secondary"
-              >
-                <FileText className="w-5 h-5" />
-                <span>Preview</span>
-              </button>
             </div>
-
-            {isExporting && (
-              <div className="export-progress">
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill"
-                    style={{ width: `${exportProgress}%` }}
-                  ></div>
-                </div>
-                <span className="progress-text">{exportProgress}% Complete</span>
-              </div>
-            )}
           </div>
+
+          {isExporting && (
+            <div className="mt-6">
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-pink-500 to-rose-500 transition-all duration-300 rounded-full"
+                  style={{ width: `${exportProgress}%` }}
+                ></div>
+              </div>
+              <span className="text-sm text-gray-600 mt-2 block text-center">{exportProgress}% Complete</span>
+            </div>
+          )}
         </div>
       </main>
     </div>
